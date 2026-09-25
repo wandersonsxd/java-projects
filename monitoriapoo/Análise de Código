@@ -1,0 +1,34 @@
+public class Produto {
+    public String nome;
+    private static double preco;      // ERRO: deveria ser atributo de instância, não static
+    final int codigo;
+ 
+    public Produto(String nome) {
+        codigo = "A100";              // ERRO: tipo incompatível (String em campo int)
+        nome = nome;                  // ERRO: shadowing, falta "this." -> this.nome = nome;
+    }
+ 
+    public static void aplicarDesconto(double porcentagem) {
+        preco = preco - (preco * (porcentagem / 100));
+        System.out.println("Produto: " + nome);  // ERRO: método static acessando atributo de instância
+    }
+ 
+    public void setCodigo(int novoCodigo) {
+        this.codigo = novoCodigo;     // ERRO: "codigo" é final, não pode ser reatribuído
+    }
+ 
+    public void getPreco() {          // ERRO: retorno declarado void
+        return preco;                 // ERRO: retornando double em método void
+    }
+ 
+    public static void main(String[] args) {
+        Produto p1 = new Produto("Teclado");
+        p1.preco = 150.0;             // funciona (static), mas devia ser Produto.preco
+        p1.codigo = 500;              // ERRO: "codigo" é final
+ 
+        double valor = p1.getPreco(); // ERRO: getPreco() é void, não pode ser atribuído a double
+        System.out.println("Valor: " + valor);
+ 
+        Produto.aplicarDesconto(10);
+    }
+}
